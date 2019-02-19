@@ -1,3 +1,5 @@
+rot = 0
+
 --Alle zu ladenden Elemente sind hier drin
 function love.load()
      love.window.setTitle("Bloxxs")
@@ -23,7 +25,7 @@ function drawing ()
 end
 
 function titletext ()
-    love.graphics.draw(block1, 180, 600/20, 0.7, 6, 6)
+    love.graphics.draw(block1, 200, 600/7, rot, 6, 6, 6, 6)
     love.graphics.setColor(0.5, 0.6, 0.2)
     love.graphics.print("Bloxxs", 500/2, 600/20, 0, 7, 7)
     love.graphics.setColor(100, 100, 100)
@@ -39,13 +41,14 @@ end
 --Eigene Funktionen Enden hier
 
 --Update-Funktion für Bewegungen und immer wiederkehrende Funktionen
-function love.update()
+function love.update(dt)
     if love.keyboard.isDown("escape") then
         love.event.quit()
     end
     if love.keyboard.isDown("f1") then
         helpBox()
-    end     
+    end
+    rot = rot + 0.3*dt
 end
 
 --Zeichnen des Spielfeldes
