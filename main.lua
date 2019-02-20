@@ -1,6 +1,9 @@
-rot = 0
+rot = 0             -- Rotierung des Logos
+gameSelect = 0      -- Spielselektierung
+s = 0.2             -- Zeitsetzung
+lastActionTime = 0  -- Letzte Zeit von Aktion
 
---Alle zu ladenden Elemente sind hier drin
+-- Alle zu ladenden Elemente sind hier drin
 function love.load()
      love.window.setTitle("Bloxxs")
      imageData = love.image.newImageData("graphics/block1.png")
@@ -9,7 +12,7 @@ function love.load()
 end
 
 
---Eigene Funktionen beginnen hier
+-- Eigene Funktionen beginnen hier
 
 function drawing ()
     for j = 0, 59 do
@@ -25,7 +28,7 @@ function drawing ()
 end
 
 function titletext ()
-    love.graphics.draw(block1, 200, 600/7, rot, 6, 6, 6, 6)
+    love.graphics.draw(block1, 200, 600/7, rot, 6, 6, 5, 5)
     love.graphics.setColor(0.5, 0.6, 0.2)
     love.graphics.print("Bloxxs", 500/2, 600/20, 0, 7, 7)
     love.graphics.setColor(100, 100, 100)
@@ -38,9 +41,31 @@ function helpBox ()
     love.window.showMessageBox(helpTitle, helpMessage, info, false)
 end
 
---Eigene Funktionen Enden hier
+function chooseButton ()
+    love.graphics.setColor(50, 100, 0)
+    love.graphics.rectangle("fill", 700/2-50, 600/4+20+90*gameSelect, 30, 30)
+    love.graphics.setColor(100, 100, 100)
+end
 
---Update-Funktion für Bewegungen und immer wiederkehrende Funktionen
+function gameSelector (dt)
+    
+        if gameSelect > 0  and love.keyboard.isDown("up") 
+           and lastActionTime + s < love.timer.getTime() 
+        then
+             gameSelect = gameSelect - 1
+             lastActionTime = love.timer.getTime()
+        end
+        if gameSelect < 2 and love.keyboard.isDown("down") 
+           and lastActionTime + s < love.timer.getTime() 
+        then
+             gameSelect = gameSelect + 1
+             lastActionTime = love.timer.getTime()   
+        end 
+end
+
+-- Eigene Funktionen Enden hier
+
+-- Update-Funktion für Bewegungen und immer wiederkehrende Funktionen
 function love.update(dt)
     if love.keyboard.isDown("escape") then
         love.event.quit()
@@ -49,12 +74,14 @@ function love.update(dt)
         helpBox()
     end
     rot = rot + 0.3*dt
+    gameSelector()
 end
 
---Zeichnen des Spielfeldes
+-- Zeichnen des Spielfeldes
 function love.draw()
     drawing()
     titletext()
+    chooseButton()
     love.graphics.print("START", 700/2, 600/4, 0, 5, 5)
     love.graphics.print("SCORE", 700/2, 600/2.5, 0, 5, 5)
     love.graphics.print("CREDITS", 700/2, 600/1.8, 0, 5, 5)
