@@ -79,10 +79,12 @@ end
 function chooseSelect ()
     if love.keyboard.isDown("return") then
         if gameSelect == 0 then
-            startTitle = "Error"
+            --[[startTitle = "Error"
             startMessage = "Spiel noch nicht fertig!"
             startButtons = {"UwU", escapebutton = 1}
-            love.window.showMessageBox(startTitle, startMessage, startButtons, warning, false)
+            love.window.showMessageBox(startTitle, startMessage, startButtons, warning, false)]]
+            love.audio.stop(introMusik)
+            dofile("game.lua")
         elseif gameSelect == 1 then
             scoreTitle = "SCORE"
             scoreMessage = "Score noch nicht fertig!"
